@@ -27,7 +27,7 @@ class UserController extends Controller
 
         // $user = UserModel::all(); // ambil semua data dari tabel m_user
 
-        //======================= PRAKTIKUM 2 ==============================
+        //======================= PRAKTIKUM 2.1 ==============================
 
         // $user = UserModel::find(1);
 
@@ -39,9 +39,15 @@ class UserController extends Controller
         //     abort(404);
         // });
 
-        $user = UserModel::findOr(20, ['username', 'nama'], function () {
-            abort(404);
-        });
+        // $user = UserModel::findOr(20, ['username', 'nama'], function () {
+        //     abort(404);
+        // });
+
+        //======================= PRAKTIKUM 2.2 ==============================
+
+        // $user = UserModel::findOrFail(1);
+
+        $user = UserModel::where('username', 'manager9')->firstOrFail();
 
         return view('user', ['data' => $user]);
     }
