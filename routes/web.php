@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\POSController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -62,3 +63,10 @@ Route::post('/kategori', [KategoriController::class, 'store']);
 Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit']);
 Route::put('/kategori/{id}', [KategoriController::class, 'store2']);
 Route::get('/kategori/delete/{id}', [KategoriController::class, 'delete']);
+
+
+/*-----------------------------------------------------------------------
+                            JS 6
+-------------------------------------------------------------------------*/
+
+Route::resource('m_user', POSController::class);
