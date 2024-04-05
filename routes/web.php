@@ -22,58 +22,69 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*========================================================================
-                            JOBSHEET 3
-========================================================================*/
+// /*========================================================================
+//                             JOBSHEET 3
+// ========================================================================*/
 
-/*-----------------------------------------------------------------------
-                            Praktikum 4
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             Praktikum 4
+// -------------------------------------------------------------------------*/
 
-Route::get('/level', [LevelController::class, 'index']);
+// Route::get('/level', [LevelController::class, 'index']);
 
-/*-----------------------------------------------------------------------
-                            Praktikum 5
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             Praktikum 5
+// -------------------------------------------------------------------------*/
 
-Route::get('/kategori', [KategoriController::class, 'index']);
+// Route::get('/kategori', [KategoriController::class, 'index']);
 
-/*-----------------------------------------------------------------------
-                            Praktikum 5
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             Praktikum 5
+// -------------------------------------------------------------------------*/
 
-Route::get('/user', [UserController::class, 'index']);
+// Route::get('/user', [UserController::class, 'index']);
 
-/*-----------------------------------------------------------------------
-                            JS 4 : Praktikum 2
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             JS 4 : Praktikum 2
+// -------------------------------------------------------------------------*/
 
-Route::get('/user/tambah', [UserController::class, 'tambah']);
-Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
-Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
-Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
-Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+// Route::get('/user/tambah', [UserController::class, 'tambah']);
+// Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
+// Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
+// Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
+// Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 
-/*-----------------------------------------------------------------------
-                            JS 5
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             JS 5
+// -------------------------------------------------------------------------*/
 
-Route::get('/kategori', [KategoriController::class, 'index']);
-Route::get('/kategori/create', [KategoriController::class, 'create']);
-Route::post('/kategori', [KategoriController::class, 'store']);
-Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit']);
-Route::put('/kategori/{id}', [KategoriController::class, 'store2']);
-Route::get('/kategori/delete/{id}', [KategoriController::class, 'delete']);
+// Route::get('/kategori', [KategoriController::class, 'index']);
+// Route::get('/kategori/create', [KategoriController::class, 'create']);
+// Route::post('/kategori', [KategoriController::class, 'store']);
+// Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit']);
+// Route::put('/kategori/{id}', [KategoriController::class, 'store2']);
+// Route::get('/kategori/delete/{id}', [KategoriController::class, 'delete']);
 
 
-/*-----------------------------------------------------------------------
-                            JS 6
--------------------------------------------------------------------------*/
+// /*-----------------------------------------------------------------------
+//                             JS 6
+// -------------------------------------------------------------------------*/
 
-Route::resource('m_user', POSController::class);
+// Route::resource('m_user', POSController::class);
 
 /*-----------------------------------------------------------------------
                             JS 7
 -------------------------------------------------------------------------*/
 
 Route::get('/', [WelcomeController::class, 'index']);
+
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/', [UserController::class, 'index']);              // menampilkan halaman awal user
+    Route::post('/list', [UserController::class, 'list']);          // menampilkan data user dalam bentuk json untuk datatables
+    Route::get('/create', [UserController::class, 'create']);       // menampilkan halaman form tambah user
+    Route::post('/', [UserController::class, 'store']);             // menampilkan data user baru
+    Route::get('/{id}', [UserController::class, 'show']);           // menampilkan detail user
+    Route::get('/{id}/edit', [UserController::class, 'edit']);      // menampilkan halaman form edit user
+    Route::put('/{id}', [UserController::class, 'update']);         // menampilkan perubahan data user
+    Route::delete('/{id}', [UserController::class, 'destroy']);     // menghapus data user
+});
