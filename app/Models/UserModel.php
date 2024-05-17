@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -22,7 +23,6 @@ class UserModel extends Authenticatable implements JWTSubject
     }
     
     protected $table = 'm_user'; // Mendefinisikan nama tabel yang digunakan oleh model ini
-    public $timestamps = false;
     protected $primaryKey = 'user_id'; // Mendefinisikan primary key dari tabel yang digunakan
 
     protected $fillable =[
@@ -31,9 +31,16 @@ class UserModel extends Authenticatable implements JWTSubject
         'username',
         'nama',
         'password',
+        'image'
     ];
 
     public function level(): BelongsTo{
         return $this->belongsTo(LevelModel::class,'level_id','level_id');
+    }
+
+    protected function image(): Attribute {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/post/'. $image),
+        );
     }
 }
