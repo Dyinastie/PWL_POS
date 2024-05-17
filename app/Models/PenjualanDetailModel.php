@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class PenjualanDetailModel extends Model
 {
@@ -19,7 +20,8 @@ class PenjualanDetailModel extends Model
         'penjualan_id', 
         'barang_id', 
         'harga', 
-        'jumlah'
+        'jumlah',
+        'image'
     ];
 
     public function penjualan(): BelongsTo
@@ -29,5 +31,12 @@ class PenjualanDetailModel extends Model
     public function barang(): BelongsTo
     {
         return $this->belongsTo(BarangModel::class, 'barang_id', 'barang_id');
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/posts/' . $image),
+        );
     }
 }
