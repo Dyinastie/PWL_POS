@@ -40,6 +40,7 @@
                         <th>Nama Barang</th>
                         <th>Harga Beli</th>
                         <th>Harga Jual</th>
+                        <th>Gambar</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -95,6 +96,14 @@
                         className: "",
                         orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                         searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+                    },{
+                        data: "image",
+                        classname: "",
+                        orderable: false, //orderable true jika ingin kolom bisa diurutkan
+                        searchable: false, //searchable true jika ingin kolom bisa dicari
+                        render: function(data, type, row) {
+                            return '<img src="' + data + '" alt="Image" class="img-thumbnail" width="100">';
+                        }
                     },{
                         data: "aksi",
                         className: "",

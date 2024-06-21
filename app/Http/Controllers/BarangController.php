@@ -29,9 +29,9 @@ class BarangController extends Controller
     }
 
     // Ambil data barang dalam betuk json untuk datatables
-    public function list(Request $request) 
+    public function list(Request $request)
     {
-        $barangs = BarangModel::select('barang_id', 'kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')->with('kategori');
+        $barangs = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'image', 'kategori_id')->with('kategori');
 
         // Filter data barang berdasarkan kategori_id
         if ($request->kategori_id) {
@@ -41,14 +41,14 @@ class BarangController extends Controller
         return DataTables::of($barangs)
             ->addIndexColumn() // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
             ->addColumn('aksi', function ($barang) { // menambahkan kolom aksi
-                $btn = '<a href="'.url('/barang/' . $barang->barang_id).'" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="'.url('/barang/' . $barang->barang_id . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="'. url('/barang/'.$barang->barang_id).'">'. csrf_field() . method_field('DELETE') .
+                $btn = '<a href="' . url('/barang/' . $barang->barang_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn .= '<a href="' . url('/barang/' . $barang->barang_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/barang/' . $barang->barang_id) . '">' . csrf_field() . method_field('DELETE') .
                     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
                 return $btn;
-        })
-        ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
-        ->make(true);
+            })
+            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
+            ->make(true);
     }
 
     // Menampilkan halaman form tambah barang
@@ -66,11 +66,11 @@ class BarangController extends Controller
         $kategori = KategoriModel::all();   // ambil data level untuk ditampilkan di form
         $activeMenu = 'barang';             // set menu yang aktif
 
-        return view('barang.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori,'activeMenu' => $activeMenu]);
+        return view('barang.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
     // Menyimpan data user baru
-    public function store(Request $request) 
+    public function store(Request $request)
     {
         $request->validate([
             // barang_kode harus diisi, berupa string, minimal 3 karakter, dan bernilai unik di tabel m_barang kolom barang_kode
@@ -79,14 +79,21 @@ class BarangController extends Controller
             'barang_nama'   => 'required|string|max:100',
             'harga_beli'    => 'required|integer',
             'harga_jual'    => 'required|integer',
+            'image'         => 'required|file|image|max:1000'
         ]);
+
+        $extFile = $request->image->getClientOriginalExtension();
+        $namaFile = $request->barang_kode."_".$request->barang_nama.".$extFile";
+        $request->image->storeAs('public/barang', $namaFile);
+        $path = asset('storage/barang/'.$namaFile);
 
         BarangModel::create([
             'kategori_id'  => $request->kategori_id,
             'barang_kode'  => $request->barang_kode,
             'barang_nama'  => $request->barang_nama,
             'harga_beli'  => $request->harga_beli,
-            'harga_jual'  => $request->harga_jual            
+            'harga_jual'  => $request->harga_jual,
+            'image'       => $path
         ]);
 
         return redirect('/barang')->with('success', 'Data barang berhasil disimpan');
@@ -141,17 +148,24 @@ class BarangController extends Controller
             'barang_kode'   => 'required|string|min:3|unique:m_barang,barang_kode',
             'barang_nama'   => 'required|string|max:100',
             'harga_beli'    => 'required|integer',
-            'harga_jual'    => 'required|integer'
+            'harga_jual'    => 'required|integer',
+            'image'         => 'required|file|image|max:1000'
         ]);
+
+        $extFile = $request->image->getClientOriginalExtension();
+        $namaFile = $request->barang_kode."_".$request->barang_nama.".$extFile";
+        $request->image->storeAs('public/barang', $namaFile);
+        $path = asset('storage/barang/'.$namaFile);;
 
         BarangModel::find($id)->update([
             'kategori_id'  => $request->kategori_id,
             'barang_kode'  => $request->barang_kode,
             'barang_nama'  => $request->barang_nama,
             'harga_beli'  => $request->harga_beli,
-            'harga_jual'  => $request->harga_jual
+            'harga_jual'  => $request->harga_jual,
+            'image'       => $path
         ]);
-        
+
         return redirect('/barang')->with('success', 'Data barang berhasil diubah');
     }
 

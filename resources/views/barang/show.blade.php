@@ -12,32 +12,35 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>Data yang Anda cari tidak ditemukan.
                 </div>
             @else
-                <table class="table table-bordered table-striped table-hover tablesm">
-                <tr>
-                    <th>ID</th>
-                    <td>{{ $barang->barang_id }}</td>
-                </tr>
-                <tr>
-                    <th>Kategori Barang</th>
-                    <td>{{ $barang->kategori->kategori_nama }}</td>
-                </tr>
-                <tr>
-                    <th>Kode Barang</th>
-                    <td>{{ $barang->barang_kode }}</td>
-                </tr>
-                <tr>
-                    <th>Nama Barang</th>
-                    <td>{{ $barang->barang_nama }}</td>
-                </tr>
-                <tr>
-                    <th>Harga Beli</th>
-                    <td>{{ $barang->harga_beli }}</td>
-                </tr>
-                <tr>
-                    <th>Harga Jual</th>
-                    <td>{{ $barang->harga_jual }}</td>
-                </tr>
-                </table>
+                        <table class="table table-bordered table-striped table-hover tablesm">
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ $barang->barang_id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kategori Barang</th>
+                                <td>{{ $barang->kategori->kategori_nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kode Barang</th>
+                                <td>{{ $barang->barang_kode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nama Barang</th>
+                                <td>{{ $barang->barang_nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>Harga Beli</th>
+                                <td>{{ $barang->harga_beli }}</td>
+                            </tr>
+                            <tr>
+                                <th>Harga Jual</th>
+                                <td>{{ $barang->harga_jual }}</td>
+                            </tr>
+                            <th>Gambar</th>
+                                <td><img src="{{ $barang->image }}" alt="Gambar" width="100"></td>
+                            </tr>
+                            </table>
             @endempty
             <a href="{{ url('barang') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
         </div>
